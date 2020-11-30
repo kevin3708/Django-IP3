@@ -1,0 +1,159 @@
+{%include 'base.html'%}
+{% load static %}
+{% load cloudinary %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">  
+<link rel="stylesheet" href="{% static 'js/jquery.easypiechart.js' %}">  
+{% endblock  %}
+  
+
+{% block content %} 
+
+<!-- Jumbotron -->
+<div class="card card-image" style="background-image: url('{{ first.image.url }}');">
+    <div class="text-white text-center rgba-stylish-strong py-5 px-4">
+      <div class="py-5">
+  
+        <!-- Content -->
+        <h2 class="card-title h2 my-4 py-2">{{ first.project_name }}</h2>
+        <h5>Posted By, <span class="h5 orange-text lead"> {{ first.profile.user.username }}</span> </h5>
+
+        <p class="mb-4 pb-2 px-md-5 mx-md-5 lead">{{ first.description }}</p>
+            
+        <div class="circle mt-5">
+            <div class="box">
+                <div class="chart" data-percent="100" data-scale-color="#ffb400">{{ first.ave_des|floatformat:1 }}</div>
+                <h3>Design</h3>
+            </div>
+            <div class="box">
+                <div class="chart" data-percent="100" data-scale-color="#ffb400">{{ first.ave_use|floatformat:1 }}</div>
+                <h3>Usability</h3>
+            </div>
+            <div class="box">
+                <div class="chart" data-percent="100" data-scale-color="#ffb400">{{ first.ave_cont|floatformat:1 }}</div>
+                <h3>Content</h3>
+            </div>
+        </div> 
+
+            <!-- <div class="buttons">
+                <a href="" class="white-text"><i class="fas fa-chevron-circle-right fa-2x"></i></a>
+                <a href="" class="white-text"><i class="fas fa-chevron-circle-left fa-2x"></i></a>    
+            </div>  -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt-4">
+      <div class="row">
+          <div class="col-12"><h3>Top Rated Projects</h3></div>
+      </div>
+      <div class="row">
+          {% for items in post %}
+            
+          <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="avatar">
+                      
+                      {% if items.profile.avatar %}
+                      <img src="{{ items.profile.avatar.url }}">
+                      {% else %}
+                      <img src="/static/img/code.jpg">
+                      {% endif %}
+                        
+                    </div>
+                    <div class="name lead"><a href="{% url 'profile' items.profile.user.username %}">{{ items.profile.user.first_name }} {{ items.profile.user.last_name }}</a></div>
+                    <!-- <div class="date">@{{ items.profile.user.username }}</div> -->
+                    <div class="date lead">{{ items.date| date }}</div>
+                </div>
+                <div class="card-content p-3 lead">
+                    {{ items.description | truncatechars:38 }}
+                </div>
+                <div class="card-content">
+                    <a href="{% url 'singleProject' items.id %}">
+                        <img src="{{ items.image.url }}" style="width: 100%">
+                    </a>
+                   
+                </div>
+                <div class="card-content fg-gray p-2 lead">
+                    <span><small>Likes: </small>{{ items.like }}</span>
+                    
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'likePost' items.id %}" class="flat-button mif-thumbs-up mif-3x">Like</a>
+                    <a href="{% url 'singleProject' items.id %}" class="flat-button mif-hour-glass mif-3x">Rate</a>
+                </div>
+            </div>
+          </div>
+        
+          {% endfor %}
+
+  </div>
+
+</div>
+<br>
+<!-- Footer -->
+<footer class="page-footer font-small aqua-gradient pt-4">
+
+    <!-- Footer Elements -->
+    <div class="container">
+  
+      <!--Grid row-->
+      <div class="row">
+  
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+  
+          <!-- Form -->
+          <form action="{% url 'search' %}" class="form-inline">
+            <input class="form-control form-control-sm mr-3 w-75" name="project" type="text" placeholder="Search"
+              aria-label="Search">
+              <button type="submit" class="btn btn-sm"><i class="fas fa-search" aria-hidden="true"></i></button>
+           
+          </form>
+          <!-- Form -->
+  
+        </div>
+        <!--Grid column-->
+  
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+  
+          <form class="input-group">
+            <input type="text" class="form-control form-control-sm" placeholder="Your email"
+              aria-label="Your email" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-dark my-0" type="button">Subscribe</button>
+            </div>
+          </form>
+  
+        </div>
+        <!--Grid column-->
+  
+      </div>
+      <!--Grid row-->
+  
+    </div>
+    <!-- Footer Elements -->
+  
+    <!-- Copyright -->
+    <div class="footer-copyright text-center text-dark py-3">© 2020 Copyright:
+      <a class="text-dark" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+  
+  </footer>
+  <!-- Footer -->
+  <!-- Jumbotron -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="/static/js/jquery.easypiechart.js"></script>
+  <script>
+    $(function() {
+        $('.chart').easyPieChart({
+            //your options goes here
+        });
+    });
+</script>
+    
+{% endblock %}

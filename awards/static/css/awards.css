@@ -1,0 +1,95 @@
+.btn{
+    border-radius: 20px;
+    color: #111;
+}
+
+.card .card-body .message {
+    padding-left: 80px;
+    
+    &::after {
+      clear: both;
+    }
+  }
+  
+  .card .card-body .actions {
+    margin-top: 5px;
+  }
+
+  .card img{
+      width: 70px;
+      height: 75px;
+  }
+
+ #donut_val{
+     width: 10px;
+ }
+
+ #skills{
+     display: none;
+ }
+
+ .circle{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.circle .box{
+  width: 25%;
+  float: left;
+}
+
+.box .chart{
+  position: relative;
+  width: 110px;
+  height: 110px;
+  margin: 0 auto;
+  text-align: center;
+  text-decoration: none;
+  font-size: 25px;
+}
+
+.box .chart canvas{
+  position: absolute;
+  top: -38px;
+  left: 0;
+}
+
+.box h3{
+  color: #111;
+  text-align: center;
+}
+
+.box h2{
+  color: #111;
+  text-transform: uppercase;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.media img{
+  width: 70px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.container-fluid .main_pic img{
+  width: 100%;
+  height: 720px;
+  object-fit: cover;  
+}
+
+.first img{
+  height: 350px;
+  object-fit: cover;
+}
+
+.second img{
+  height: 350px;
+  object-fit: cover;
+}
+
+.third img{
+  height: 350px;
+  object-fit: cover;
+}

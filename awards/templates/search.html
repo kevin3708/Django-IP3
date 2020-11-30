@@ -1,0 +1,52 @@
+{% include "base.html" %}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock  %}
+
+{% block content %}
+<div class="container">
+
+  <div class="row">
+    {% if post %}
+      <h2>Found {{ post|length }} projects matching keyword {{message}}</h2>
+    {% else %}
+      <h2> Found 0 projects matching {{message}}</h2>
+    {% endif %}
+
+  </div>
+
+  <br>
+  
+  {% if post %}
+
+  <h2 style="text-decoration: underline;">Projects Matching "{{message}}" Searchword</h2>
+
+  <div class="row">
+    {% for items in post %}
+    <div class="col-sm-6 col-md-6 col-lg-6">
+
+      <div class="card image-header">
+        <div class="card-header fg-white"
+             style="background-image: url('{{ items.image.url }}')">
+            {{ items.project_name }}
+        </div>
+        <div class="card-content p-2">
+            <p class="fg-gray">Posted {{ items.date| date }}</p>
+            {{ items.description}}
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'singleProject' items.id %}" class="btn btn-outline-teal btn-md">View Project</a>
+        </div>
+    </div>
+
+    </div>
+    {% endfor %}
+  </div>
+    
+  {% endif %}
+    
+
+</div>
+{% endblock %}

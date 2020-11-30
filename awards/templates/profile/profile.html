@@ -1,0 +1,119 @@
+{%include 'base.html'%}
+{% load static %}
+{% load cloudinary %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">  
+{% endblock  %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="card-container">
+
+        {% if profile.avatar %}
+        <img class="round img-fluid rounded-circle" src="{{ profile.avatar.url }}" alt="userpic" />
+        {% else %}
+        <img class="round img-fluid rounded-circle" src="/static/img/code.jpg" alt="userpic" />
+        {% endif %}
+
+        <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+        <h3 class="text-muted">@{{profile.user.username}}</h3>
+        
+        {% if profile.location %}
+        <h6><i class="fas fa-map-marker-alt">  {{ profile.location }}</i></h6>
+        {% else %}
+        <h6><i class="fas fa-map-marker-alt">  Please Set Your Location..!!</i></h6>
+        {% endif %}
+            
+        {% if profile.job_title %}
+        <p><i class="fas fa-briefcase"></i>   {{ profile.job_title }}</p>
+        {% else %}
+        <p>Set Your Career Title</p>
+        {% endif %}
+                
+        <div class="contact">
+            <h3 style="text-decoration: underline;">Contacts</h3>
+            <a class=""><i class="fas fa-envelope">  {{ profile.user.email }}</i></a>
+        </div>
+        <div class="buttons">
+            <div class="bio mt-2">
+                <h4>Bio...</h4>
+                
+                {% if profile.bio %}
+                <p class="lead">{{ profile.bio }}</p>
+                {% else %}
+                <p class="lead">Describe yourself...</p>
+                {% endif %}
+                    
+            </div>
+        </div>
+       
+        <div class="buttons">
+            {% if request.user == profile.user %}
+            <a href="{% url 'editProfile' profile.user %}" class="btn primary">
+                Edit Profile
+            </a>
+            {% endif %}
+            {% if follow_status == True %}
+            <a class="btn btn-outline-danger" href="{% url 'follow' profile.user 0 %}">Unfollow</a>
+            {% else %}
+            <a class="btn btn-outline-success" href="{% url 'follow' profile.user 1 %}">Follow</a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+    <hr>
+<div class="container">
+    <h2 style="text-decoration: underline;" class="text-center">Projects</h2>
+
+    {% if posts %}
+
+    <div class="row"> 
+            
+        {% for items in posts %}
+          
+        <div class="col-md-4 col-sm-4 col-lg-4">
+          <div class="card">
+              <div class="card-header">
+                  <div class="font-weight-bold">Posted On : {{ items.date|date }}</div>
+              </div>
+              <div class="card-content">
+                  <a href="{% url 'singleProject' items.id %}">
+                    <img src="{{ items.image.url }}" style="width: 100%">
+                  </a>          
+              </div>
+              <div class="card-content p-2">
+                  <span>Likes: {{ items.like }}</span>
+              </div>
+              <div class="card-footer">
+                  
+                  {% if okay == 'False' %}
+                  <a href="{% url 'likePost' items.id %}" style="color: green;" class="flat-button mif-thumbs-up mif-2x"></a>
+                  {% else %}
+                  <a href="{% url 'likePost' items.id %}" style="color: blue;" class="flat-button mif-thumbs-up mif-2x"></a>
+                  {% endif %}
+
+                  <button class="flat-button mif-share mif-2x"></button>
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+        <br>
+        <hr>
+  
+</div>
+{% else %}
+<div class="text-center">
+<h4>You Have Not Posted Any Projects</h4>
+<a class="btn btn-md btn-outline-teal" href="{% url 'addProject' %}">Upload Project</a>
+</div>
+<br>
+<hr>
+{% endif %}
+
+</div>
+  
+{% endblock  %}

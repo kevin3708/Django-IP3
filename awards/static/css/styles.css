@@ -1,0 +1,42 @@
+.buttons{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+
+.circle{
+    display: flex;
+    justify-content: space-around;
+    margin: 0 auto;
+}
+
+.circle .box{
+    width: 25%;
+    float: left;
+}
+
+.box .chart{
+    position: relative;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+    text-align: center;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.box .chart canvas{
+    position: absolute;
+    top: -38px;
+    left: 0;
+}
+
+.box h3{
+    color: white;
+    text-align: center;
+}
+
+.card-content img{
+    height: 400px;
+    object-fit: cover;
+}

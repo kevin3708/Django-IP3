@@ -1,0 +1,363 @@
+{%include 'base.html'%}
+{% load static %}
+{% load cloudinary %}
+{% load bootstrap4 %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/awards.css' %}">  
+<link rel="stylesheet" href="{% static 'js/jquery.easypiechart.js' %}">  
+{% endblock  %}
+  
+
+{% block content %} 
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12 mb-3 main_pic">
+      
+          <img src="{{ post.image.url }}" class="img-fluid z-depth-1" alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+      </div>
+      <!-- Grid row -->
+      
+      <!-- Grid row -->
+      <div class="row">
+      
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-12 mb-3 first">
+      
+          <img src="{{ post.screenshots.image_1.url }}" class="img-fluid z-depth-1"
+            alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-6 mb-3 second">
+      
+          <img src="{{ post.screenshots.image_2.url }}" class="img-fluid z-depth-1"
+            alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-6 mb-3 third">
+      
+          <img src="{{ post.screenshots.image_3.url }}" class="img-fluid z-depth-1"
+            alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+      </div>
+      <!-- Grid row -->
+      <div class="circle mt-5">
+        <div class="box">   
+        {% if post.ave_des > 0 %}
+          <div class="chart" data-percent="{% widthratio post.ave_des|floatformat:1 10 100 %}" data-scale-color="#00000000">{{ post.ave_des|floatformat:1 }}</div>
+          <h3>Design</h3> 
+          {% else %}
+            <div class="chart" data-percent="0" data-scale-color="#00000000">0</div>      
+            <h3>Design</h3>
+            {% endif %} 
+        </div>
+
+        <div class="box">
+          {% if post.ave_use > 0 %}
+            <div class="chart" data-percent="{% widthratio post.ave_use|floatformat:1 10 100 %}" data-scale-color="#00000000">{{ post.ave_use|floatformat:1 }}</div>
+            <h3>Usability</h3>
+            {% else %}
+            <div class="chart" data-percent="0" data-scale-color="#00000000">0</div>
+            <h3>Usability</h3>
+            {% endif %} 
+          </div>
+
+        
+        <div class="box">
+          {% if post.ave_cont > 0 %}
+            <div class="chart" data-percent="{% widthratio post.ave_cont|floatformat:1 10 100 %}" data-scale-color="#00000000">{{ post.ave_cont|floatformat:1 }}</div>
+            <h3>Content</h3>
+            {% else %}
+            <div class="chart" data-percent="0" data-scale-color="#00000000">0</div>
+            <h3>Content</h3>
+            {% endif %} 
+          </div>
+        
+        
+    </div>
+
+    <div class="overal">
+      <div class="circle mt-5">
+        <div class="box">
+          
+          {% if post.all_ave > 0 %}
+          <div class="chart" data-percent="{% widthratio post.all_ave|floatformat:1 10 100 %}" data-scale-color="#00000000">{{ post.all_ave| floatformat:1 }}</div>
+          {% else %}
+          <div class="chart" data-percent="0" data-scale-color="#00000000">0</div>
+          {% endif %}       
+            <h2>Overal Score</h2>
+
+            <div class="text-center">
+            
+            <a data-toggle="modal" data-target="#orangeModalSubscription" class="btn btn-outline-success">Rate Project</a>              
+                
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+      <div class="description text-center">
+        <h2><strong>{{ post.project_name }}</strong></h2>
+        <h6 class="lead">Posted On <strong>{{ post.date| date }}</strong></h6>
+        <a href="{% url 'likePost' post.id %}"><i class="far fa-heart fa-3x" style="color: green;">  {{ post.like }}</i></a>
+
+        <div style="width: 420px;text-align:left;" class="container">
+          <div class="card">
+            <div class="card-body">
+              
+              {% if post.profile.avatar.url %}
+              <img src="{{ post.profile.avatar.url }}" class="float-left rounded-circle img-fluid">
+              {% else %}
+              <img src="/static/img/code.jpg" class="float-left rounded-circle img-fluid">
+              {% endif %}
+                
+              <div class="message">
+                <h5 style="text-decoration: underline;">{{ post.profile.user.first_name }} {{ post.profile.user.last_name }}</h5>
+                <h6 class="text-muted">@{{ post.profile.user.username }}</h6>
+                <h6 class="card-subtitle text-muted">{{ post.profile.job_title }} <span style="font-weight: normal;" class="text-muted"><i> <br> from</i> <strong>{{ post.profile.location }}...</strong></span></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <h3 style="text-decoration: underline;">Project Description</h3>
+        <p class="lead font-weight-bold">{{ post.description }}</p>
+      </div>     
+
+      <hr style="color: #111;font-weight:bold;">
+    </div>
+
+<div class="container">
+    <ul class="nav nav-pills">
+        <li class="nav-item text-white font-weight-bold">
+          <h4><a class="nav-link active" href="#"><i class="fas fa-poll-h">  Ratings</i></a></h4>
+        </li>
+        <li class="nav-item text-black hoverable font-weight-bold">
+            <h4 id="reviews" style="text-decoration: underline;"><a class="nav-link"><i class="fas fa-comment-alt">  Reviews</i></a></h4>
+        </li>
+        <!-- <li class="nav-item text-black hoverable font-weight-bold">
+            <h4><a class="nav-link"><i class="fas fa-users">  Users</i></a></h4>
+        </li> -->
+      </ul>
+         
+          
+          {% if rating %}
+            
+      {% for items in rating %}
+        
+        <div class="card">
+            <div class="card-body">
+              {% if items.profile.avatar.url %}
+              <img src="{{ items.profile.avatar.url }}" class="float-left rounded-circle img-fluid">
+              {% else %}
+              <img src="/static/img/code.jpg" class="float-left rounded-circle img-fluid">
+              {% endif %}
+              <div class="message">
+                <h5 class="">{{ items.profile.user.first_name }} {{ items.profile.user.last_name }}</h5>
+                <h6 class="text-muted">@{{ items.profile.user.username }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{ items.profile.job_title }} <span style="font-weight: normal;" class="text-muted"><i>from</i> <strong>{{ items.profile.location }}...</strong></span></h6>
+                <ul style="display: none;" id="{{items.profile.id}}" class="skills">
+                    <li>
+                        <span>Design</span>
+                        <span class="float-right">{{ items.design }}</span>
+                        <div data-role="progress" data-value="{{ items.design_rate }}" data-small="true"></div>
+                    </li>
+                    <li>
+                        <span>Usability</span>
+                        <span class="float-right">{{ items.usability }}</span>
+                        <div data-role="progress" data-value="{{ items.usability_rate }}" data-small="true" data-cls-bar="bg-cyan"></div>
+                    </li>
+                    <li>
+                        <span>Content</span>
+                        <span class="float-right">{{ items.content }}</span>
+                        <div data-role="progress" data-value="{{ items.content_rate }}" data-small="true" data-cls-bar="bg-red"></div>
+                    </li>
+                    
+                </ul>
+                <button class="btn btn-outline-default btn-sm {{items.profile.id}}" id="user">View User Ratings</button>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            $(document).ready(function(){
+              $('.{{items.profile.id}}').click(function(){
+                  $('#{{items.profile.id}}').toggle();
+              });
+            });
+      
+          </script>
+
+          {% endfor %}  
+
+          {% else %} 
+          
+          <h3 class="mt-3">No One Has Rated This Project Yet...</h3>
+
+          {% endif %}
+
+<h3 id="user_reviews" class="mt-5 mb-3" style="text-decoration: underline;">User Reviews</h3>
+<div class="media">
+  
+  {% if profile.avatar.url %}
+  <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="{{ profile.avatar.url }}"
+  alt="Avatar">
+  {% else %}
+  <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="/static/img/code.jpg"
+      alt="Avatar">
+  {% endif %}
+    
+    <div class="media-body">
+      <div class="media mt-3 shadow-textarea">
+        <div class="media-body">
+          <h5 class="mt-0 font-weight-bold blue-text">{{ request.user.first_name }} {{ request.user.last_name }}</h5>
+          <h6 class="mt-0 font-weight-bold blue-text text-muted">@{{ request.user.username }}</h6>
+          <div class="form-group basic-textarea rounded-corners">
+            <form class="form-group" method="POST"> 
+              {% csrf_token %} 
+              {{ backend_form }}
+            <textarea class="form-control z-depth-1" id="exampleFormControlTextarea345" name="comment" rows="3" placeholder="Write your comment..."></textarea>
+            <button type="submit" class="btn btn-sm btn-outline-primary">Submit</button>
+          </form> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<br>
+  {% for items in comments %}
+
+  <div class="media">
+
+    {% if items.profile.avatar.url %}
+    <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="{{ items.profile.avatar.url }}"  alt="Avatar">
+      {% else %}
+      <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="/static/img/code.jpg" alt="Avatar">
+      {% endif %}
+
+    <div class="media-body">
+      <h5 class="mt-0 font-weight-bold blue-text">{{ items.profile.user.first_name }} {{ items.profile.user.last_name }}</h5>
+     <span style="color: #111;"> {{ items.comment }}</span>
+      <p class="text-muted">{{ items.date| timesince }} ago...</p>
+    </div>
+  </div>
+<hr>
+  {% endfor %}
+
+  <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-notify modal-warning" role="document">
+    <!--Content-->
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header text-center">
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Rate Project</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
+      </div>
+
+      <!--Body-->
+      <div class="modal-body">
+        <div class="md-form mb-1">
+          <form class="form-group" method="POST"> 
+                {% csrf_token %} 
+                {{ backend_form }}
+                {% bootstrap_form form_rate %} 
+                <button type="submit" class="btn btn-outline-warning waves-effect">Submit </button>
+              </form>
+        </div>        
+      </div>
+      <!--Footer-->
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+</div>
+<br>
+<!-- Footer -->
+<footer class="page-footer font-small aqua-gradient pt-4">
+
+    <!-- Footer Elements -->
+    <div class="container">
+  
+      <!--Grid row-->
+      <div class="row">
+  
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+  
+          <!-- Form -->
+          <form class="form-inline">
+            <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Search"
+              aria-label="Search">
+            <i class="fas fa-search" aria-hidden="true"></i>
+          </form>
+          <!-- Form -->
+  
+        </div>
+        <!--Grid column-->
+  
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+  
+          <form class="input-group">
+            <input type="text" class="form-control form-control-sm" placeholder="Your email"
+              aria-label="Your email" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-sm btn-outline-dark my-0" type="button">Subscribe</button>
+            </div>hide
+          </form>
+  
+        </div>
+        <!--Grid column-->
+  
+      </div>
+      <!--Grid row-->
+  
+    </div>
+    <!-- Footer Elements -->
+  
+    
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="/static/js/jquery.easypiechart.js"></script>
+  <script>
+    $(function() {
+        $('.chart').easyPieChart({
+          barColor:'#00b300'
+        });
+    });
+
+    $(document).ready(function(){
+        $('#').click(function(){
+            $('#').toggle();
+        });
+
+        $("#reviews").click(function(){
+          var elmnt = document.getElementById("user_reviews");
+          elmnt.scrollIntoView();
+        });
+    });
+</script>
+    
+{% endblock %}
